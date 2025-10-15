@@ -8,4 +8,13 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DriverDeploy.Agent\DriverDeploy.Agent\DriverDeploy.Agent.csproj" />
+    <ProjectReference Include="..\..\DriverDeploy.Shared\DriverDeploy.Shared\DriverDeploy.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

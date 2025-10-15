@@ -1,16 +1,43 @@
 ﻿<Window x:Class="DriverDeploy.Server.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DriverDeploy.Server"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <StackPanel>
-            <Button x:Name="ScanButton" Content="Сканировать сеть" Click="ScanButton_Click"/>
-            <TextBlock x:Name="ResultText" Text="Результат появится здесь"/>
+        Title="DriverDeploy - Центр управления драйверами" Height="600" Width="800">
+    <DockPanel>
+        <!-- Панель управления -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="10" Background="#f0f0f0">
+            <Button x:Name="ScanButton" Content="Сканировать сеть" 
+                    Click="ScanButton_Click" Margin="5" Padding="15,8" FontWeight="Bold"/>
+            <Button x:Name="UpdateDriversButton" Content="Обновить драйверы" 
+                    Click="UpdateDrivers_Click" Margin="5" Padding="15,8"/>
+            <TextBlock x:Name="StatusText" Margin="10" VerticalAlignment="Center" 
+                       Text="Нажмите 'Сканировать сеть' для поиска машин" FontWeight="SemiBold"/>
+            <Button x:Name="DebugButton" Content="Диагностика" 
+                    Click="DebugButton_Click" Padding="15,8" Background="LightYellow"/>
         </StackPanel>
 
-    </Grid>
+        <!-- Основной контент -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Список найденных машин -->
+            <ListView x:Name="MachinesListView" Grid.Row="0" Margin="10">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Имя компьютера" DisplayMemberBinding="{Binding MachineName}" Width="200"/>
+                        <GridViewColumn Header="IP адрес" DisplayMemberBinding="{Binding IpAddress}" Width="120"/>
+                        <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding Status}" Width="100"/>
+                        <GridViewColumn Header="Последний контакт" DisplayMemberBinding="{Binding LastSeen}" Width="150"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <!-- Панель результатов -->
+            <Border Grid.Row="1" Background="#f8f8f8" BorderThickness="1" BorderBrush="#ddd" Margin="10" Padding="10">
+                <TextBlock x:Name="ResultText" Text="Готов к работе" TextWrapping="Wrap"/>
+            </Border>
+        </Grid>
+    </DockPanel>
 </Window>
