@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36109.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverDeploy.Agent", "DriverDeploy.Agent\DriverDeploy.Agent\DriverDeploy.Agent.csproj", "{50E91536-AAFC-E2BB-44DB-C354AC1E2BCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverDeploy.Server", "DriverDeploy.Server\DriverDeploy.Server\DriverDeploy.Server.csproj", "{9DB9AAB0-B1E3-91AB-814A-EDC40F1DC1ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverDeploy.Shared", "DriverDeploy.Shared\DriverDeploy.Shared\DriverDeploy.Shared.csproj", "{531F1743-21BA-4D8B-3589-318807B9A5EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50E91536-AAFC-E2BB-44DB-C354AC1E2BCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50E91536-AAFC-E2BB-44DB-C354AC1E2BCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50E91536-AAFC-E2BB-44DB-C354AC1E2BCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50E91536-AAFC-E2BB-44DB-C354AC1E2BCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DB9AAB0-B1E3-91AB-814A-EDC40F1DC1ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DB9AAB0-B1E3-91AB-814A-EDC40F1DC1ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DB9AAB0-B1E3-91AB-814A-EDC40F1DC1ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DB9AAB0-B1E3-91AB-814A-EDC40F1DC1ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{531F1743-21BA-4D8B-3589-318807B9A5EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{531F1743-21BA-4D8B-3589-318807B9A5EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{531F1743-21BA-4D8B-3589-318807B9A5EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{531F1743-21BA-4D8B-3589-318807B9A5EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {31E21E05-4139-4FD5-91A5-0129409C0BEC}
+	EndGlobalSection
+EndGlobal
