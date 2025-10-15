@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\DriverDeploy.Shared\DriverDeploy.Shared\DriverDeploy.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

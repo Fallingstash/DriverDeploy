@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <StackPanel>
+            <Button x:Name="ScanButton" Content="Сканировать сеть" Click="ScanButton_Click"/>
+            <TextBlock x:Name="ResultText" Text="Результат появится здесь"/>
+        </StackPanel>
 
     </Grid>
 </Window>
