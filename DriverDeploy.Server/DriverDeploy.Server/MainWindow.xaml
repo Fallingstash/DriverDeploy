@@ -7,16 +7,18 @@
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="10" Background="#f0f0f0">
             <Button x:Name="ScanButton" Content="Сканировать сеть" 
                     Click="ScanButton_Click" Margin="5" Padding="15,8" FontWeight="Bold"/>
+            <Button x:Name="ScanDevicesButton"
+        Content="Сканировать устройства"
+        Click="ScanDevicesButton_Click"
+        Margin="5" Padding="15,8" Background="LightBlue"/>
             <Button x:Name="UpdateDriversButton" Content="Обновить драйверы" 
                     Click="UpdateDrivers_Click" Margin="5" Padding="15,8"/>
             <Button x:Name="ScanDriversButton" Content="Сканировать драйверы" 
                     Click="ScanDriversButton_Click" Margin="5" Padding="15,8"/>
             <Button x:Name="InstallDriverButton" Content="Установить драйвер" 
                     Click="InstallDriverButton_Click" Margin="5" Padding="15,8" Background="LightGreen"/>
-            <TextBlock x:Name="StatusText" Margin="10" VerticalAlignment="Center" 
-                       Text="Нажмите 'Сканировать сеть' для поиска машин" FontWeight="SemiBold"/>
-            <Button x:Name="DebugButton" Content="Диагностика" 
-                    Click="DebugButton_Click" Padding="15,8" Background="LightYellow"/>
+            <Button x:Name="DebugButton" Content="Отладка" 
+                    Click="DebugButton_Click" Margin="5" Padding="15,8" Background="LightYellow"/>
         </StackPanel>
 
         <!-- Основной контент -->
@@ -42,7 +44,20 @@
                         </ListView.View>
                     </ListView>
                 </TabItem>
-                
+
+                <TabItem Header="Устройства машины">
+                    <ListView x:Name="DevicesListView" Margin="5">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Категория" DisplayMemberBinding="{Binding Category}" Width="150"/>
+                                <GridViewColumn Header="Устройство" DisplayMemberBinding="{Binding Name}" Width="250"/>
+                                <GridViewColumn Header="Производитель" DisplayMemberBinding="{Binding Manufacturer}" Width="150"/>
+                                <GridViewColumn Header="Версия драйвера" DisplayMemberBinding="{Binding DriverVersion}" Width="120"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </TabItem>
+
                 <TabItem Header="Драйверы машины">
                     <ListView x:Name="DriversListView" Margin="5">
                         <ListView.View>
@@ -77,7 +92,7 @@
                     </ListView>
                 </TabItem>
             </TabControl>
-
+            
             <!-- Панель управления драйверами -->
             <StackPanel Grid.Column="1" Margin="10" Background="#f8f8f8">
                 <GroupBox Header="Управление драйверами" Margin="5">
