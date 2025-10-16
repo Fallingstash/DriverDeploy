@@ -1,7 +1,7 @@
 ﻿<Window x:Class="DriverDeploy.Server.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="DriverDeploy - Центр управления драйверами" Height="600" Width="800">
+        Title="DriverDeploy - Центр управления драйверами" Height="700" Width="1000">
     <DockPanel>
         <!-- Панель управления -->
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="10" Background="#f0f0f0">
@@ -9,6 +9,10 @@
                     Click="ScanButton_Click" Margin="5" Padding="15,8" FontWeight="Bold"/>
             <Button x:Name="UpdateDriversButton" Content="Обновить драйверы" 
                     Click="UpdateDrivers_Click" Margin="5" Padding="15,8"/>
+            <Button x:Name="ScanDriversButton" Content="Сканировать драйверы" 
+                    Click="ScanDriversButton_Click" Margin="5" Padding="15,8"/>
+            <Button x:Name="InstallDriverButton" Content="Установить драйвер" 
+                    Click="InstallDriverButton_Click" Margin="5" Padding="15,8" Background="LightGreen"/>
             <TextBlock x:Name="StatusText" Margin="10" VerticalAlignment="Center" 
                        Text="Нажмите 'Сканировать сеть' для поиска машин" FontWeight="SemiBold"/>
             <Button x:Name="DebugButton" Content="Диагностика" 
@@ -17,27 +21,99 @@
 
         <!-- Основной контент -->
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="300"/>
+            </Grid.ColumnDefinitions>
 
-            <!-- Список найденных машин -->
-            <ListView x:Name="MachinesListView" Grid.Row="0" Margin="10">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Имя компьютера" DisplayMemberBinding="{Binding MachineName}" Width="200"/>
-                        <GridViewColumn Header="IP адрес" DisplayMemberBinding="{Binding IpAddress}" Width="120"/>
-                        <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding Status}" Width="100"/>
-                        <GridViewColumn Header="Последний контакт" DisplayMemberBinding="{Binding LastSeen}" Width="150"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+            <!-- Список найденных машин и их драйверов -->
+            <TabControl Grid.Column="0" Margin="10">
+                <TabItem Header="Машины в сети">
+                    <ListView x:Name="MachinesListView" Margin="5" SelectionChanged="MachinesListView_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Имя компьютера" DisplayMemberBinding="{Binding MachineName}" Width="200"/>
+                                <GridViewColumn Header="IP адрес" DisplayMemberBinding="{Binding IpAddress}" Width="120"/>
+                                <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding Status}" Width="100"/>
+                                <GridViewColumn Header="ОС" DisplayMemberBinding="{Binding OSVersion}" Width="150"/>
+                                <GridViewColumn Header="Драйверы" DisplayMemberBinding="{Binding InstalledDrivers.Count}" Width="80"/>
+                                <GridViewColumn Header="Обновления" DisplayMemberBinding="{Binding OutdatedDrivers.Count}" Width="100"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </TabItem>
+                
+                <TabItem Header="Драйверы машины">
+                    <ListView x:Name="DriversListView" Margin="5">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Устройство" DisplayMemberBinding="{Binding DeviceName}" Width="250"/>
+                                <GridViewColumn Header="Версия" DisplayMemberBinding="{Binding DriverVersion}" Width="120"/>
+                                <GridViewColumn Header="Поставщик" DisplayMemberBinding="{Binding Provider}" Width="150"/>
+                                <GridViewColumn Header="Статус" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding NeedsUpdate}" Value="True">
+                                                                <Setter Property="Text" Value="Требует обновления"/>
+                                                                <Setter Property="Foreground" Value="Red"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding NeedsUpdate}" Value="False">
+                                                                <Setter Property="Text" Value="Актуальный"/>
+                                                                <Setter Property="Foreground" Value="Green"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </TabItem>
+            </TabControl>
 
-            <!-- Панель результатов -->
-            <Border Grid.Row="1" Background="#f8f8f8" BorderThickness="1" BorderBrush="#ddd" Margin="10" Padding="10">
-                <TextBlock x:Name="ResultText" Text="Готов к работе" TextWrapping="Wrap"/>
-            </Border>
+            <!-- Панель управления драйверами -->
+            <StackPanel Grid.Column="1" Margin="10" Background="#f8f8f8">
+                <GroupBox Header="Управление драйверами" Margin="5">
+                    <StackPanel>
+                        <TextBlock Text="Выбранная машина:" FontWeight="Bold" Margin="0,5"/>
+                        <TextBlock x:Name="SelectedMachineText" Text="Не выбрана" Margin="0,5" Foreground="Blue"/>
+                        
+                        <Button x:Name="RefreshDriversButton" Content="Обновить список драйверов" 
+                                Click="RefreshDriversButton_Click" Margin="0,10" Padding="10,5"/>
+                        
+                        <Button x:Name="CheckUpdatesButton" Content="Проверить обновления" 
+                                Click="CheckUpdatesButton_Click" Margin="0,5" Padding="10,5" Background="LightYellow"/>
+                        
+                        <Button x:Name="DeployDriverButton" Content="Развернуть драйвер" 
+                                Click="DeployDriverButton_Click" Margin="0,10" Padding="10,5" Background="LightGreen" FontWeight="Bold"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Пакеты драйверов" Margin="5">
+                    <ListView x:Name="DriverPackagesListView" Height="150">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Name}" Width="120"/>
+                                <GridViewColumn Header="Версия" DisplayMemberBinding="{Binding Version}" Width="80"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </GroupBox>
+            </StackPanel>
         </Grid>
+
+        <!-- Панель результатов -->
+        <Border DockPanel.Dock="Bottom" Background="#f8f8f8" BorderThickness="1" BorderBrush="#ddd" Margin="10" Padding="10" Height="100">
+            <ScrollViewer>
+                <TextBlock x:Name="ResultText" Text="Готов к работе" TextWrapping="Wrap"/>
+            </ScrollViewer>
+        </Border>
     </DockPanel>
 </Window>
