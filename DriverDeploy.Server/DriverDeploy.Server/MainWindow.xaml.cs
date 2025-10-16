@@ -26,7 +26,7 @@ namespace DriverDeploy.Server {
        localIP= Dns.GetHostAddresses(Dns.GetHostName()).FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToString();
 
       // Инициализация сервиса репозитория драйверов
-      _driverRepoService = new DriverRepositoryService(""); // Замени на IP VM3
+      _driverRepoService = new DriverRepositoryService(localIP); // Замени на IP VM3
 
       MachinesListView.ItemsSource = Machines;
       DriversListView.ItemsSource = CurrentMachineDrivers;
