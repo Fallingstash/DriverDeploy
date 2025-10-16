@@ -23,7 +23,7 @@ namespace DriverDeploy.Server {
     public MainWindow() {
       InitializeComponent();
 
-       localIP= Dns.GetHostAddresses(Dns.GetHostName()).FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToString();
+       localIP = Dns.GetHostAddresses(Dns.GetHostName()).FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToString();
 
       // Инициализация сервиса репозитория драйверов
       _driverRepoService = new DriverRepositoryService(localIP); // Замени на IP VM3
