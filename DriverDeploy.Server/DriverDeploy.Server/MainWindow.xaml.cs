@@ -18,11 +18,15 @@ namespace DriverDeploy.Server {
     private MachineInfo _selectedMachine;
     private DriverRepositoryService _driverRepoService;
 
+    private string localIP;
+
     public MainWindow() {
       InitializeComponent();
 
+       localIP= Dns.GetHostAddresses(Dns.GetHostName()).FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToString();
+
       // Инициализация сервиса репозитория драйверов
-      _driverRepoService = new DriverRepositoryService("http://localhost:80"); // Замени на IP VM3
+      _driverRepoService = new DriverRepositoryService(""); // Замени на IP VM3
 
       MachinesListView.ItemsSource = Machines;
       DriversListView.ItemsSource = CurrentMachineDrivers;
