@@ -93,6 +93,8 @@
                         
                         <Button x:Name="DeployDriverButton" Content="Развернуть драйвер" 
                                 Click="DeployDriverButton_Click" Margin="0,10" Padding="10,5" Background="LightGreen" FontWeight="Bold"/>
+
+                        <ProgressBar x:Name="ScanProgress" Width="200" Height="20" Margin="10,0" Visibility="Collapsed" IsIndeterminate="True"/>
                     </StackPanel>
                 </GroupBox>
 

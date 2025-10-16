@@ -61,6 +61,7 @@ namespace DriverDeploy.Server
         {
             ScanButton.IsEnabled = false;
             StatusText.Text = "Сканирование сети...";
+            ScanProgress.Visibility = Visibility.Visible;
             Machines.Clear();
 
             try
@@ -104,6 +105,7 @@ namespace DriverDeploy.Server
             }
             finally
             {
+                ScanProgress.Visibility = Visibility.Collapsed;
                 ScanButton.IsEnabled = true;
             }
         }
