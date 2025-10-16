@@ -18,6 +18,8 @@ namespace DriverDeploy.Server
         public ObservableCollection<DriverInfo> CurrentMachineDrivers { get; } = new ObservableCollection<DriverInfo>();
         public ObservableCollection<DriverPackage> DriverPackages { get; } = new ObservableCollection<DriverPackage>();
 
+        public ObservableCollection<DeviceDescriptor> CurrentMachineDevices { get; } = new();
+
         private MachineInfo _selectedMachine;
 
         public MainWindow()
@@ -29,6 +31,9 @@ namespace DriverDeploy.Server
 
             // Загружаем тестовые пакеты драйверов
             LoadDriverPackages();
+
+            DevicesListView.ItemsSource = CurrentMachineDevices;
+
         }
 
         private void LoadDriverPackages()
@@ -358,5 +363,56 @@ namespace DriverDeploy.Server
             }
             return null;
         }
+
+        private async Task ScanDevicesForMachine(MachineInfo machine)
+        {
+            try
+            {
+                StatusText.Text = $"🧭 Получаем список устройств на {machine.MachineName}...";
+                using var client = new HttpClient();
+                client.Timeout = TimeSpan.FromSeconds(10);
+
+                var response = await client.GetAsync($"http://{machine.IpAddress}:8080/api/devices");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var devices = JsonConvert.DeserializeObject<DeviceDescriptor[]>(json);
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        CurrentMachineDevices.Clear();
+                        foreach (var device in devices)
+                        {
+                            CurrentMachineDevices.Add(device);
+                        }
+                    });
+
+                    ResultText.Text = $"✅ Найдено {devices.Length} устройств на {machine.MachineName}";
+                    StatusText.Text = $"Готово: {devices.Length} устройств";
+                }
+                else
+                {
+                    ResultText.Text = $"❌ Ошибка получения устройств: {response.StatusCode}";
+                }
+            }
+            catch (Exception ex)
+            {
+                ResultText.Text = $"❌ Ошибка: {ex.Message}";
+            }
+        }
+
+        private async void ScanDevicesButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MachinesListView.SelectedItem is MachineInfo selectedMachine)
+            {
+                await ScanDevicesForMachine(selectedMachine);
+            }
+            else
+            {
+                ResultText.Text = "❌ Сначала выберите машину из списка.";
+            }
+        }
+
+
     }
 }

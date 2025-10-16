@@ -17,6 +17,7 @@
                     Click="ScanDriversButton_Click" Margin="5" Padding="15,8"/>
             <Button x:Name="InstallDriverButton" Content="Установить драйвер" 
                     Click="InstallDriverButton_Click" Margin="5" Padding="15,8" Background="LightGreen"/>
+            <TextBlock x:Name="StatusText" Margin="10" VerticalAlignment="Center" Text="" FontWeight="SemiBold" Width="34"/>
             <Button x:Name="DebugButton" Content="Отладка" 
                     Click="DebugButton_Click" Margin="5" Padding="15,8" Background="LightYellow"/>
         </StackPanel>
