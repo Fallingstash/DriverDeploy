@@ -19,4 +19,8 @@
     <ProjectReference Include="..\..\DriverDeploy.Shared\DriverDeploy.Shared\DriverDeploy.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\ViewModels\" />
+  </ItemGroup>
+
 </Project>
