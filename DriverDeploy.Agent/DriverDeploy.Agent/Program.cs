@@ -70,6 +70,13 @@ namespace DriverDeploy.Agent
                 return Results.Ok(outdated);
             });
 
+            app.MapGet("/api/devices", () =>
+            {
+                var devices = DeviceEnumerator.GetAllDevices();
+                Console.WriteLine($"🧭 Обнаружено устройств: {devices.Count}");
+                return Results.Ok(devices);
+            });
+
             await app.RunAsync("http://0.0.0.0:8080"); // Меняем на RunAsync
         }
 
