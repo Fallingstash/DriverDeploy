@@ -60,13 +60,14 @@ namespace DriverDeploy.Server
         private async void ScanButton_Click(object sender, RoutedEventArgs e)
         {
             ScanButton.IsEnabled = false;
-            StatusText.Text = "Сканирование сети...";
+            ResultText.Text = "Сканирование сети...";
+            ScanProgress.Visibility = Visibility.Visible;
             Machines.Clear();
 
             try
             {
                 var ipRange = MachineScanner.GetIPRangeWithLocalhost();
-                StatusText.Text = $"Сканируем {ipRange.Count} адресов...";
+                ResultText.Text = $"Сканируем {ipRange.Count} адресов...";
 
                 int foundCount = 0;
 
@@ -89,21 +90,22 @@ namespace DriverDeploy.Server
                                 {
                                     Machines.Add(checkTask.Result);
                                     foundCount++;
-                                    StatusText.Text = $"Найдено машин: {foundCount}. Проверяем {ip}...";
+                                    ResultText.Text = $"Найдено машин: {foundCount}. Проверяем {ip}...";
                                 });
                             }
                         }
                     });
                 });
 
-                StatusText.Text = $"Сканирование завершено. Найдено {foundCount} машин с агентом.";
+                ResultText.Text = $"Сканирование завершено. Найдено {foundCount} машин с агентом.";
             }
             catch (Exception ex)
             {
-                StatusText.Text = $"Ошибка сканирования: {ex.Message}";
+                ResultText.Text = $"Ошибка сканирования: {ex.Message}";
             }
             finally
             {
+                ScanProgress.Visibility = Visibility.Collapsed;
                 ScanButton.IsEnabled = true;
             }
         }
@@ -124,7 +126,7 @@ namespace DriverDeploy.Server
         {
             try
             {
-                StatusText.Text = $"🔍 Сканируем драйверы на {machine.MachineName}...";
+                ResultText.Text = $"🔍 Сканируем драйверы на {machine.MachineName}...";
                 using var client = new HttpClient();
                 client.Timeout = TimeSpan.FromSeconds(5);
 
@@ -151,7 +153,7 @@ namespace DriverDeploy.Server
                     }
 
                     ResultText.Text = $"✅ Найдено {drivers.Length} драйверов на {machine.MachineName}";
-                    StatusText.Text = $"Готово: {drivers.Length} драйверов на {machine.MachineName}";
+                    ResultText.Text = $"Готово: {drivers.Length} драйверов на {machine.MachineName}";
                 }
                 else
                 {
@@ -192,7 +194,7 @@ namespace DriverDeploy.Server
         {
             try
             {
-                StatusText.Text = $"🔍 Проверяем обновления на {machine.MachineName}...";
+                ResultText.Text = $"🔍 Проверяем обновления на {machine.MachineName}...";
                 using var client = new HttpClient();
                 client.Timeout = TimeSpan.FromSeconds(5);
 
@@ -209,7 +211,7 @@ namespace DriverDeploy.Server
                     }
 
                     ResultText.Text = $"🔔 Найдено {outdatedDrivers.Length} устаревших драйверов на {machine.MachineName}";
-                    StatusText.Text = $"Обновления: {outdatedDrivers.Length} драйверов требуют внимания";
+                    ResultText.Text = $"Обновления: {outdatedDrivers.Length} драйверов требуют внимания";
 
                     // Показываем устаревшие драйверы в списке
                     if (machine == _selectedMachine)
@@ -249,7 +251,7 @@ namespace DriverDeploy.Server
         {
             try
             {
-                StatusText.Text = $"🚀 Устанавливаем {driverPackage.Name} на {machine.MachineName}...";
+                ResultText.Text = $"🚀 Устанавливаем {driverPackage.Name} на {machine.MachineName}...";
                 using var client = new HttpClient();
                 client.Timeout = TimeSpan.FromSeconds(30); // Увеличиваем таймаут для установки
 
@@ -265,7 +267,7 @@ namespace DriverDeploy.Server
                     if (result.Success)
                     {
                         ResultText.Text = $"✅ {result.Message}";
-                        StatusText.Text = $"Успешно установлен {driverPackage.Name}";
+                        ResultText.Text = $"Успешно установлен {driverPackage.Name}";
                     }
                     else
                     {
